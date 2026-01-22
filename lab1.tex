@@ -1,0 +1,280 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line only needs to identify funding in the first footnote. If that is unnecessary, please comment on it.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{comment}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage[most]{tcolorbox}
+\usepackage{pdfpages}
+
+\newenvironment{bgquote} {\begin{tcolorbox}[ enhanced, breakable=true, colback=blue!5, colframe=white, boxrule=0pt, left=1em, right=1em, top=0.5em, bottom=0.5em, boxsep=0pt, width=\linewidth, before skip=0.5em, after skip=0.5em ]} {\end{tcolorbox}}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{Evaluation of Machine Learning Regressors: Implementation and Analysis \\
+%{\footnotesize \textsuperscript{*}Note: Subtitles should not be used}
+}
+
+\author{\IEEEauthorblockN{Suraj Karki}
+\IEEEauthorblockA{\textit{Department of Engineering Science }\\
+\textit{University West}\\
+Trollhättan, Sweden \\
+suraj.karki@student.hv.se}
+\and
+\IEEEauthorblockN{Nils Karlsson}
+\IEEEauthorblockA{\textit{Department of Engineering Science }\\
+\textit{University West}\\
+Trollhättan, Sweden \\
+nils...@student.hv.se}
+\and
+\IEEEauthorblockN{Nils Wikström}
+\IEEEauthorblockA{\textit{Department of Engineering Science} \\
+\textit{University West}\\
+Trollhättan, Sweden \\
+nils...@student.hv.se}
+}
+
+
+\maketitle
+
+\thispagestyle{plain}
+\pagestyle{plain}
+
+
+\begin{comment}
+\begin{abstract}
+    This report presents the findings from laboration II which provided a hands-on opportunity to explore different regression models using the California Housing dataset \cite{dataset} containing demographic and housing attributes. The laboration introduced key steps to build complete preprocessing pipelines, including handling missing values and encoding categorical attributes. Subsequently, we trained and evaluated Linear Regression, Decision Tree Regression, and Random Forest Regression models on the prepared dataset. For the assignment, we further extended this workflow by experimenting with the Support Vector Regression model (SVR) using different kernels and hyperparameters to select the best-performing SVR configuration. The results of SVR model were then compared with those aforementioned models. Results and exploration details, along with the source code available at GitHub \cite{labgithub}. The findings show that the Random Forest Regression model is the best fit for this particular dataset. 
+\end{abstract}
+
+150 - 250 words. The title and abstract will help other readers decide if they will read the bachelor thesis further. Abstracts must be a clear, short summary of the full bachelor thesis. It is important that the abstract is interesting and holds the reader’s attention. Some questions about the title and abstract: a) does the title accurately say what the study was about? If not, can you suggest a different title? b) does the abstract summarize the bachelor thesis? c) could the abstract be understood by readers outside of software engineering? For all submissions, including mid-term check, a complete abstract is a requirement (results and conclusions may be expressed as preliminary if not yet obtained). Your abstract should include the motivation for your thesis, the objective of the thesis, how you collected and analyzed data, and a summary of your findings. We apply what is called structural abstract, so you have to structure it according to the following topics, and in that order: \textit{Context}, \textit{Objective}, \textit{Method}, \textit{Results} and \textit{Conclusions}\footnote{See for example here under Abstract: \url{https://www.sciencedirect.com/journal/information-and-software-technology/publish/guide-for-authors}}.
+
+
+
+
+\begin{IEEEkeywords}
+Machine Learning, SVR Exploration, Comparsion between Regression models, ML Model Training
+\end{IEEEkeywords}
+\end{comment}
+
+\section{Introduction}
+Machine Learning Models (MLMs) are widely used to extract patterns and make predictions from complex data\cite{geeksforgeeks}. However, their effectiveness depends not only on the choice of algorithm but also on the quality and preparation of the input data \cite{geron2022hands}. MLMs are trained to learn patterns from data so that they can make accurate predictions on new instances. Training a model involves fitting it to historical data, while evaluation assesses how well the model generalizes new data. Different types of MLMs are suitable in different scenarios with different types of data that can have varied structures and relationships. Additionally, the evaluation metrics are necessary to quantify the model's performance. \textbf{Root Mean Square Error (RMSE)} and \textbf{cross-validation (cv)}, are such evaluation metrics that provides insight into accuracy \cite{geron2022hands}. RMSE measures the average prediction error magnitude, while cv splits the data into multiple folds to ensure that the model's performance is consistent and not dependent on a particular train-test split. Therefore, procedures like selecting an appropriate model, evaluating, and tuning its hyperparameters are critical for a model's reliable predictions and usability \cite{geron2022hands}.   
+
+\begin{comment}
+
+\section{Objective}
+By the end of Lab 1, you should be able to interpret histograms and outputs generated by Python functions and understand the reasoning behind various operations performed on the data. Your first assignment is to analyze and discuss the results of the following Python commands used during your lab session.
+\end{comment}
+
+\section{Machine Learning Models}
+%explain what needs to be known for a software engineer to understand the study. Focus on explaining relevant concepts and terminology to understand your research area. Readers with difficulties understanding the related work section come here for answers.
+\begin{comment}
+Before building a machine learning model, it’s essential to understand the dataset’s structure \cite{geron2022hands}. The \texttt{housing.info()} function provides a quick overview of key details such as the index range, number of entries, non-null counts, data types, and memory usage. This insight guides data-cleaning and preprocessing decisions, such as handling missing values or encoding categorical variables ensuring the dataset is ready for effective modelling.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/housing.info()_default.png} 
+    \caption{Overview of the dataset using \texttt{housing.info()}}
+    \label{fig:housing-info}
+\end{figure}
+
+As shown in Figure ~\ref{fig:housing-info}  \textbf{RangeIndex: 20640 entries}, tells us the size of the data we are working with. \textbf{Data Columns (total 10 columns)} shows there are 10 attributes in total, the number of features. \textbf{Non-null Count} describes how many rows have a value for that column.
+For example, \textit{total\_bedrooms} has fewer than 20,640 non-null values, meaning some are missing. 
+We must handle the missing values before training the model \cite{geron2022hands}. \textbf{Dtype} shows the data type of each column, such as \textit{float64} for numeric and \textit{object} for text. This matters because categorical column like \textit{ocean\_proximity} requires encoding, e.g. one-hot encoding. Also the \textbf{memory usages} parameter is showing the memory footprint of the dataframe.
+
+Overall, this quick look from \textit{housing.info()} method guide us about how complete and clean the dataset is, and highlights where preprocessing is needed before modle training.
+\end{comment}
+
+In this laboration, four regression models were used to predict the median house value in the California Housing dataset: \textbf{Linear Regression}, \textbf{Decision Tree Regression}, \textbf{Random Forest Regression}, and \textbf{Support Vector Regression}. These models represent different trade-offs between interpretability, computational cost, and predictive performance. By comparing them, we can evaluate which approach best captures the underlying patterns in the dataset and provides the most accurate predictions. This section provides a short introduction to those regression models. 
+
+\subsection{Linear Regression Model}
+Linear Regression is a simple supervised learning model that utilizes labeled data to learn and fit the most suitable linear function for predicting new data points \cite{geron2022hands}. It assumes a linear relationship between the input and output variables, meaning that changes in input lead to proportional changes in the output. This relationship is represented as a straight line and estimates model coefficients that minimize the error between predicted and actual values \cite{linearregression}. It is easy and computationally efficient, but may underperform when the data exhibits non-linear patterns \cite{geron2022hands}.  
+
+\subsection{Decision Tree Regression}
+Decision tree Regression model splits the data into hierarchical regions based on feature values, allowing it to capture non-linear relationships \cite{geron2022hands}. It has several parameters for regularization, tree size, number of features, and so forth \cite{decisiontreereg}. These parameters should be well-tuned to balance the complexity and size of the trees to reduce the memory consumption. On the other hand, the single decision trees (generally known as the Decision Tree Regression model) are prone to overfitting, which reduces the generalization performance. 
+
+\subsection{Random forest Regression}
+Random Forest is an ensemble learning algorithm that builds multiple Decision Tree models on different sub-samples of a dataset and combines their outputs by averaging \cite{geron2022hands}. Each tree is grown using the \textit{best} split strategy to optimize performance, and the \textit{max\_samples} parameter controls the size of sub-samples when \textit{bootstrap= True}. It also handles missing values at each split by learning whether samples with missing data should be directed to the left or right branch based on information gain. During prediction, missing values are routed consistently according to the learned splits, ensuring robust performance even with incomplete data \cite{randomforestreg}.
+
+\subsection{Support Vector Regression}
+Support Vector Regression (SVR) is a versatile model that uses kernel functions to map input data into a multidimensional dataset. It can capture complex patterns and construct a model based on a subset of the training data known as support vectors. Key hyperparameters such as $c$, $\gamma$, and $degree$ control the model's tolerance to errors, influence of individual training point, and the flexibility of polykernels, respectively. If the value of $c$ is high, it will overfit the model, while a low value will underfit. Likewise, high $\gamma$ makes the model focus on individual points, while a low $\gamma$ makes it more general. Tuning these parameters allows SVR to balance bias, variance, and model complexity effectively \cite{svrreg}. 
+
+\begin{comment}
+    
+
+To ensure that our datasets reflect the diversity of the underlying data, it is crucial to consider sampling strategies \cite{geron2022hands}. This section examines the roles of stratified sampling and random sampling in maintaining representative distributions across key categories.
+\end{comment}
+\begin{comment}
+    
+In the modeling, the representation of the training and test datasets plays an important role in enhancing the performance and generalization of the model \cite{geron2022hands}. Usually, we split the data into two sets, i.e., training dataset (70-80\%) and test dataset (20-30\%), likewise using random sampling. Random sampling is unbalanced due to it nature of being purely random in design. We do not have control over the nodes that we want to include. On the other hand, stratified sampling is divided into smaller subgroups based on important features of the attribute.  
+
+Anyhow, there are chances that random sampling can even lead to unbalanced or biased splits when the dataset includes important subgroups that are not evenly distributed. 
+
+Stratified sampling is the solution to this issue. It fixes this issue by ensuring that the test set contains the same amount of important features (like income categories) as the overall dataset. 
+By maintaining the distribution of the income levels the model is trained and tested on data that better represents the true population. This results in more reliable performance metrics and reduces the risk of bias introduced when we use random variation. 
+In simple words, stratification is valuable when working with heterogeneous datasets where 
+specific attributes (like income in this case) have a significant effect on the target variable. It 
+provides a strong foundation for building models with more generalizability and making them 
+more robust, so that they could perform well on unseen data. 
+
+The stratified sampling is more similar to the full dataset as compared to the random dataset. The numbers in figure \ref{fig:sampling_bias} illustrate the clear differences between the two test sets.
+\end{comment}
+\begin{comment}
+    
+
+Stratified sampling is a technique used to ensure that a data sample reflects the overall distribution of important categories or attributes in a dataset \cite{geron2022hands}. Instead of drawing samples purely at random, the data is divided into distinct “strata” \cite{geron2022hands} (such as income categories, geographic regions, gender, and so forth), and samples are taken proportionally from each group. This approach reduces sampling bias and improves the reliability and accuracy of model evaluation by ensuring that important subgroups are sufficiently represented.
+
+In the California Housing dataset, for example, the median income attribute can be used to create different income categories. A purely random split might over-represent or under-represent certain income subgroups, leading to skewed data sets. Stratified sampling preserves the original income distribution ratio across the data, and it will result in more consistent model performance.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/sampling_bias_comp.png} 
+    \caption{Sampling bias comparison stratified vs random}
+    \label{fig:sampling_bias}
+\end{figure}
+
+Figure \ref{fig:sampling_bias} compares the proportions of income categories obtained from random sampling and stratified sampling in the lab session. It clearly shows that the stratified split maintains the original category distribution much more closely than the random split, highlighting why stratification is preferred, particularly when a key attribute strongly influences the target variable.
+\end{comment}
+
+\section{Results and Analysis}
+%Table \ref{tab:rmse} together with figure \ref{fig:cv-rmse}shows that \textbf{Random Forest Regressor} achieved the lowest cross-validation RMSE (55345), outperforming all other models. The standard deviation of 2629 values  indicates that it is stable in prediction and  generalizes better and reduces variance compared with single Decision tree Regresser (73 965 RMSE) or Linear Regression (67508 RMSE) models. 
+
+Table \ref{tab:rmse}, alongside Figure \ref{fig:cv-rmse}, demonstrates that the Random Forest Regressor achieved the lowest cross-validation RMSE of 53,345, outperforming all other models. The relatively low standard deviation of 2,629 indicates consistent predictions, good generalization, and reduced variance compared with other models like single Decision Tree Regression (RMSE 73,965) and Linear Regression (RMSE 67,508).
+   
+\begin{table}[ht]
+\centering
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{4pt}
+\rowcolors{2}{white}{gray!10}
+\begin{tabular}{lcc}
+\toprule
+\rowcolor{gray!20}\textbf{Model} & \textbf{cv-RMSE (Mean)} & \textbf{Standard Deviation} \\
+\midrule
+Linear Regression & 67,508 & 2,477 \\
+Decision Tree Regressor & 73,965 & 4,954 \\
+\textbf{Random Forest Regressor} & \textbf{53,345} & \textbf{2,629} \\
+SVR (Linear kernel, best $C$) & 70,690 & 6,128 \\
+SVR (RBF kernel, tuned $C$, $\gamma$) & 116,751 &4,784\\
+SVR (Polynomial kernel) & 116,691 & 4,843 \\
+SVR (Sigmoid kernel) & 116,679 & 4,782 \\
+\bottomrule
+\end{tabular}
+\caption{{Cross-validated RMSE (mean) and standard deviation for all evaluated models on the California Housing dataset (values rounded to the nearest whole number).}
+}
+\label{tab:rmse}
+\end{table}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width= 0.5\textwidth]{figures/cv-rmse1.png} 
+    \caption{Cross-validated RMSE for each model}
+    \label{fig:cv-rmse}
+\end{figure}
+
+In contrast, the SVR model's generally produced higher RMSE values. Even with a tuned linear kernel (best $c$), SVR achieved 70,690 RMSE. This result is obviously comparable to Linear Regression model, but still clearly worse than the Random Forest Regression model. The non-linear SVR kernels (RBF, poly, sigmoid) all produced RMSEs of about 116,000, showing substantial overfitting or underfitting due to hyperparameter mismatch on this dataset. In particular, the RBF kernel achieved a lower RMSE of 57,127 on the training set when \textit{$c$ = 300000} as shown in figure \ref{fig:train_rmse_rbf}, but the higher error on the cross-validation folds (validation set) showed in figure \ref{fig:cv-rmse}, indicates overfitting and poor generalization.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width= 0.5\textwidth]{figures/RMSE_training_set_rbf.png} 
+    \caption{Mean RMSE and selected hyperparameters for the SVR model with RBF kernel on the training dataset, illustrating low training error at high $c$ values}
+    \label{fig:train_rmse_rbf}
+\end{figure}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width= 0.5\textwidth]{figures/RBF_hyper.png} 
+   \caption{Effect of hyperparameter variations on RMSE for the SVR model with RBF kernel, based on cross-validation results}
+    \label{fig:c-gamma}
+\end{figure}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width= 0.5\textwidth]{figures/heatmap_svr_sigmoid.png} 
+   \caption{Effect of hyperparameter variations on RMSE for the SVR model with sigmoid kernel, based on cross-validation results}
+    \label{fig:sigmoid}
+\end{figure}
+
+Figure \ref{fig:c-gamma} and \ref{fig:sigmoid} make this pattern explicit. SVR performance is highly sensitive to hyperparameters, with some changes in $c$ or $\gamma$ causing large swings in error. In contrast, the Random Forest Regression model delivers strong performance out of the box with fewer tuning requirements. 
+
+Overall, these results demonstrate that the \textbf{Random Forest Regression} model offers better accuracy and stability compared with other models. SVR can be powerful on more complex datasets, but it requires careful kernel and hyperparameters selections to match or exceed tree-based methods. 
+
+\section{Conclusion}
+This assignment provided practical experience in preparing data for machine-learning models, tuning hyperparameters, and evaluating model performance using cross-validation. We implemented a full preprocessing pipeline, handled missing values, encoded categorical variables, and applied several regression models such as Linear Regression, Decision Tree Regression, Random Forest Regression, and SVR (with four different kernels).
+
+The experiments demonstrated the importance of model selection and parameter tuning. Linear Regression underperformed due to its limited capacity to perform non-linear relationships, while the Decision Tree model demonstrated better training accuracy but higher variance. Random Forest delivered the best overall performance, achieving the lowest cross-validated RMSE with relatively low variance, confirming its suitability for this dataset. However, the results indicate that further fine-tuning is necessary to achieve satisfactory performance of the model.
+
+SVR highlighted how kernel choice and hyperparameter settings such as
+$c$, $\gamma$, and $degree$ etc. affect bias–variance trade-offs. The linear kernel produced competitive results after tuning, but RBF and polynomial kernels, despite achieving low training error at a high value of $c$, suffered from significantly higher validation RMSE, indicating overfitting. These findings underline the necessity of cross-validation to detect overfitting and select the most appropriate model.
+
+Through this lab, we learned how to design and run a complete machine-learning workflow, compared multiple models, and interpreted evaluation metrics such as RMSE and standard deviation. The exercise reinforced the critical role of data preprocessing, model evaluation, and hyperparameter tuning in building reliable predictive systems. The source code and exploration results presented in this report are available on GitHub \cite{labgithub}.
+\begin{comment}
+    
+The correlation analysis is used to identify which attributes are associated and have an influence on each other \cite {geron2022hands}. It has a range of -1 to 1. If it is 1 or whereabouts, then it means that there is a strong positive correlation, while -1 means the opposite. 
+Figure \ref{fig:corr-matrix} illustrates the correlation matrix for all attributes in the California Housing dataset. 
+
+The attribute \textit{median\_income} shows the highest positive correlation with \textit{median\_house\_value} (0.687151), indicating a strong relationship between household income and housing prices. In contrast, \textit{bedrooms\_per\_room} exhibits a negative correlation of –0.25992 with \textit{median\_house\_value}, meaning that as the ratio of bedrooms per room increases, the median house value tends to decrease.
+
+Keeping that in mind and looking at the correlation heatmap figure \ref{fig:heatmap}, it becomes apparent that the most useful attribute in figuring out the house value is the \textit{median\_income}. It is clearly diagonal in shape compared to all the other attributes that don’t necessarily show any trend. The other closest attribute to show positive correlation is \textit{rooms\_per\_household}, though its influence is significantly smaller. Compared to \textit{bedrooms\_per\_room} or \textit{total\_bedrooms}, however, it has a more prominent role in predicting the house value.
+
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=\textwidth]{figures/Corr_heatmap.png} 
+    \caption{Visual overview of correlations between 4 promising attributes}
+    \label{fig:heatmap}
+\end{figure*}
+\end{comment}
+
+
+\begin{comment}
+\section{Notes Related to Writing (TO BE REMOVED)}
+The following are some notes related to the content's presentation and writing based on last year's thesis reports.
+\begin{itemize}
+    %%% item
+    \item Figures and Tables: these should be well described in the text of the section or subsection where they are added. 
+    %
+    For example, describe what the figure shows on the x-axis, y-axis, refer to important features, and discuss your interpretation of the data.
+    %%% item
+    \item The caption of Figures and Tables should instead provide a concise but comprehensive description of what they represent.
+    %%% item
+    \item Add a descriptive legend under the Figure or Table when using colors or shapes so the reader knows what they represent.
+
+    %%% item
+    \item Referring to figures, tables, or sections in the text of the sections: ``Figure 1 shows ..." where F is always a capitalized letter wherever it occurs in the text. 
+    %
+    The same is true for tables and sections: ``Table 1 shows..." or ``... as seen in Table 1'' or ``... concluding remarks are presented in Section X''.
+   
+    %%% item
+    \item Don't overuse abbreviations. Readers might not recall more than 5 abbreviations, so select them wisely for your thesis. Either way, avoid abbreviations in labels or textual descriptions in figures or tables. For instance, write artificial intelligence instead of defining AI for artificial intelligence.
+    
+    %%% item
+    \item For sections that contain multiple subsections, briefly describe that substructure at the very beginning of the section - before the first subsection.
+
+    \item Consider graph representations beyond Bars and Box Plots. Take a look at Raincloud plots\cite{Allen2021}.
+    
+\end{itemize}
+\end{comment}
+
+%\section{References (to be removed)}
+%A Reference section will be added \textit{automagically} if you refer to articles correctly (e.g., such as here \cite{bainomugisha2013survey}). You can add references in the references.bib file. They follow the structure you can easily find on Google Scholar and databases called \BibTeX (copy and paste from there into the document - once recompiled, the reference should show). Carefully curate the content of the entries, as they may be of varying quality on the internet. Some questions to ask yourself regarding the use of references: a) are there places in the bachelor thesis where you need to cite a reference but haven’t? b) do you cite relevant previous studies and explain how they relate to the current results? c) are the cited studies recent enough to represent current knowledge? d) do you cite the work of various researchers/universities? e) do you cite findings that contradict your claims?
+
+% Example citation to ensure at least one citation command is present
+As discussed in \cite{geron2022hands}, data preprocessing is crucial for model performance.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+%\textbf{Important for each reference is that it is a clickable doi that makes it easy for a reader to get hold of the reference directly (see examples in bib file).}
+
+\end{document}
+
+
