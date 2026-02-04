@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex lab2"] 1769805197.55527 "lab2.aux" "lab2.bbl" "lab2" 1769805201.71461 0
-  "./references.bib" 1769804578 223 4804fb305fb5efece52b5fae37174a4a ""
+["bibtex lab2"] 1770224780.5818 "lab2.aux" "lab2.bbl" "lab2" 1770224788.27332 0
+  "./references.bib" 1770224779 223 32fc53001735479d6f304b016746b4ea ""
   "C:/Users/suraj/AppData/Local/Programs/MiKTeX/bibtex/bst/ieeetran/IEEEtran.bst" 1440622569 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "lab2.aux" 1769805199 2844 c4bf685c985676345159acc5bf429422 "pdflatex"
+  "lab2.aux" 1770224786 4922 d62b85b5d5d214134470907c8cbaa61a "pdflatex"
   (generated)
   "lab2.bbl"
   "lab2.blg"
   (rewritten before read)
-["pdflatex"] 1769805197.91014 "c:/Users/suraj/Desktop/Deep_learning/lab_2/lab_report/lab2.tex" "lab2.pdf" "lab2" 1769805201.71588 0
+["pdflatex"] 1770224781.99601 "c:/Users/suraj/Desktop/Deep_learning/lab_2/lab_report/lab2.tex" "lab2.pdf" "lab2" 1770224788.27541 0
   "C:/Users/suraj/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1763321513 82507 a9eef8696c92627b87e9975edea03b2a ""
   "C:/Users/suraj/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1757920654 13257343 066c675a7ec4132154284905e22fe26f ""
   "C:/Users/suraj/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc" 1458473887 4993 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -36,6 +36,8 @@
   "C:/Users/suraj/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmr8.tfm" 1136765053 1292 21c1c5bfeaebccffdb478fd231a0997d ""
   "C:/Users/suraj/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmsy6.tfm" 1136765053 1116 933a60c408fc0a863a92debe84b2d294 ""
   "C:/Users/suraj/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmsy8.tfm" 1136765053 1120 8b7d695260f3cff42e636090a8002094 ""
+  "C:/Users/suraj/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1247596667 35752 024fb6c41858982481f6968b5fc26508 ""
+  "C:/Users/suraj/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1247596667 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "C:/Users/suraj/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1247596666 32716 08e384dc442464e7285e891af9f45947 ""
   "C:/Users/suraj/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb" 1136846148 45758 19968a0990191524e34e1994d4a31cb6 ""
   "C:/Users/suraj/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb" 1136849748 44729 fea0975e20ec51c992338362f05f1146 ""
@@ -209,14 +211,21 @@
   "C:/Users/suraj/AppData/Local/Programs/MiKTeX/tex/latex/trimspaces/trimspaces.sty" 1253169183 1380 971a51b00a14503ddf754cab24c3f209 ""
   "C:/Users/suraj/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/suraj/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1729265222 55384 b454dec21c2d9f45ec0b793f0995b992 ""
-  "c:/Users/suraj/Desktop/Deep_learning/lab_2/lab_report/lab2.tex" 1769805193 6628 818ab6f44f824c6a02e688be4b8e746e ""
-  "figures/linear_kernel_pca.png" 1769796900 80588 935ffecdc89d750aea8393548a1dc21a ""
-  "figures/manual_pca_implementation.png" 1769797465 61732 0ffe76053b92fc004bc9035182c40c8f ""
-  "figures/sigmoid_kernel.png" 1769799614 37744 b7345568a5bf9323801e3a2711d8463c ""
-  "lab2.aux" 1769805199 2844 c4bf685c985676345159acc5bf429422 "pdflatex"
-  "lab2.bbl" 1769805197 1058 23401fda98b5d8ffb84629e782b4d6e1 "bibtex lab2"
-  "lab2.out" 1769805199 3687 d1038914feeaabe21cb18632f8f58471 "pdflatex"
-  "lab2.tex" 1769805193 6628 818ab6f44f824c6a02e688be4b8e746e ""
+  "c:/Users/suraj/Desktop/Deep_learning/lab_2/lab_report/lab2.tex" 1770224701 11072 dfb57439546f03438c091195f8612cb8 ""
+  "figures/accuracy_mnist-fashion.png" 1770223424 28162 51235467a9fce12072941eeea842525e ""
+  "figures/iris_output.png" 1770222747 50225 a8145c02708d60b49cc984a4ea174747 ""
+  "figures/linear_kernel_pca.png" 1769806271 80588 935ffecdc89d750aea8393548a1dc21a ""
+  "figures/loss_higher_learning_rate.png" 1770205297 42628 fdad03b59aa80ae19bff3c0bfac0f357 ""
+  "figures/loss_lower_lr.png" 1770205351 31497 52033eadac854f7220ac1d47b1a94573 ""
+  "figures/loss_mnist_fashion.png" 1770223389 22683 4309740a9b142d4f99608ef2a0d458b6 ""
+  "figures/mae_higher_learning_rate.png" 1770205264 46431 1d785e1a231758c88512db7b52dbd700 ""
+  "figures/mae_lower_lr.png" 1770205375 31771 3121456b7b06bf4eafe7e2c52bdd8115 ""
+  "figures/manual_pca_implementation.png" 1769806271 61732 0ffe76053b92fc004bc9035182c40c8f ""
+  "figures/sigmoid_kernel.png" 1769806271 37744 b7345568a5bf9323801e3a2711d8463c ""
+  "lab2.aux" 1770224786 4922 d62b85b5d5d214134470907c8cbaa61a "pdflatex"
+  "lab2.bbl" 1770224781 1058 bd48e788b055a09c432e113c4bb2fb7e "bibtex lab2"
+  "lab2.out" 1770224786 3688 5585e459f7322bff93e6a28197f57cd9 "pdflatex"
+  "lab2.tex" 1770224701 11072 dfb57439546f03438c091195f8612cb8 ""
   (generated)
   "lab2.aux"
   "lab2.log"
