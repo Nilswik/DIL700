@@ -1,0 +1,7 @@
+{
+    "python.defaultInterpreterPath": "/home/Nilse/.conda/envs/tf2/bin/python",
+    "python.analysis.extraPaths": [
+        "/home/Nilse/.conda/envs/tf2/lib/python3.10/site-packages"
+    ],
+    "python.analysis.typeCheckingMode": "off"
+}
