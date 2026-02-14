@@ -1,0 +1,38 @@
+None
+Epoch 1/100
+782/782 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2157 - loss: 2.0304 - val_accuracy: 0.2266 - val_loss: 1.9545
+Epoch 2/100
+782/782 ━━━━━━━━━━━━━━━━━━━━ 2s 3ms/step - accuracy: 0.2673 - loss: 1.8991 - val_accuracy: 0.2582 - val_loss: 1.9380
+Epoch 3/100
+782/782 ━━━━━━━━━━━━━━━━━━━━ 2s 3ms/step - accuracy: 0.2756 - loss: 1.8718 - val_accuracy: 0.2608 - val_loss: 1.8979
+Epoch 4/100
+782/782 ━━━━━━━━━━━━━━━━━━━━ 2s 3ms/step - accuracy: 0.3005 - loss: 1.8141 - val_accuracy: 0.3116 - val_loss: 1.8578
+Epoch 5/100
+782/782 ━━━━━━━━━━━━━━━━━━━━ 2s 3ms/step - accuracy: 0.3208 - loss: 1.7852 - val_accuracy: 0.2556 - val_loss: 2.0830
+Epoch 6/100
+782/782 ━━━━━━━━━━━━━━━━━━━━ 2s 3ms/step - accuracy: 0.3292 - loss: 1.7687 - val_accuracy: 0.3096 - val_loss: 1.8400
+Epoch 7/100
+782/782 ━━━━━━━━━━━━━━━━━━━━ 2s 3ms/step - accuracy: 0.3296 - loss: 1.7659 - val_accuracy: 0.3079 - val_loss: 1.8423
+Epoch 8/100
+782/782 ━━━━━━━━━━━━━━━━━━━━ 2s 3ms/step - accuracy: 0.3442 - loss: 1.7369 - val_accuracy: 0.3129 - val_loss: 1.8309
+Epoch 9/100
+782/782 ━━━━━━━━━━━━━━━━━━━━ 2s 3ms/step - accuracy: 0.2726 - loss: 1.8799 - val_accuracy: 0.1799 - val_loss: 2.0701
+Epoch 10/100
+782/782 ━━━━━━━━━━━━━━━━━━━━ 2s 3ms/step - accuracy: 0.1999 - loss: 1.9850 - val_accuracy: 0.2171 - val_loss: 1.9536
+Epoch 11/100
+782/782 ━━━━━━━━━━━━━━━━━━━━ 2s 3ms/step - accuracy: 0.2167 - loss: 1.9510 - val_accuracy: 0.2273 - val_loss: 1.9374
+Epoch 12/100
+782/782 ━━━━━━━━━━━━━━━━━━━━ 2s 3ms/step - accuracy: 0.2151 - loss: 1.9671 - val_accuracy: 0.2149 - val_loss: 1.9796
+Epoch 13/100
+782/782 ━━━━━━━━━━━━━━━━━━━━ 2s 3ms/step - accuracy: 0.2215 - loss: 1.9446 - val_accuracy: 0.1877 - val_loss: 2.1211
+Epoch 13: early stopping
+
+Comparison of Optimizers:
+Optimizer    Train Acc  Val Acc    Train Loss   Val Loss    
+SGD          0.4781     0.4134     1.4519       1.7623      
+Momentum     0.2885     0.2856     1.7995       1.9055      
+Nesterov     0.2663     0.2665     1.8587       1.9175      
+Adagrad      0.5421     0.4651     1.2813       1.5170      
+RMSprop      0.3669     0.2748     1.7033       1.9571      
+Adam         0.3049     0.3205     1.8066       1.7970      
+Nadam        0.2215     0.1877     1.9446       2.1211      
