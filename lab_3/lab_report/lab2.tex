@@ -1,0 +1,185 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts%
+% The preceding line only needs to identify funding in the first footnote. If that is unnecessary, please comment on it.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{comment}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage[most]{tcolorbox}
+\usepackage{pdfpages}
+
+\newenvironment{bgquote} {\begin{tcolorbox}[ enhanced, breakable=true, colback=blue!5, colframe=white, boxrule=0pt, left=1em, right=1em, top=0.5em, bottom=0.5em, boxsep=0pt, width=\linewidth, before skip=0.5em, after skip=0.5em ]} {\end{tcolorbox}}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{Deep Learning Lab 2 \\
+%{\footnotesize \textsuperscript{*}Note: Subtitles should not be used}
+}
+
+\author{\IEEEauthorblockN{Suraj Karki}
+\IEEEauthorblockA{\textit{Department of Engineering Science }\\
+\textit{University West}\\
+Trollhättan, Sweden \\
+suraj.karki@student.hv.se}
+\and
+\IEEEauthorblockN{Nils Karlsson}
+\IEEEauthorblockA{\textit{Department of Engineering Science }\\
+\textit{University West}\\
+Trollhättan, Sweden \\
+nils.Karlsson@student.hv.se}
+\and
+\IEEEauthorblockN{Nils Wikström}
+\IEEEauthorblockA{\textit{Department of Engineering Science} \\
+\textit{University West}\\
+Trollhättan, Sweden \\
+nils.wikstrom@student.hv.se}
+}
+
+\maketitle
+
+\thispagestyle{plain}
+\pagestyle{plain}
+
+
+\begin{IEEEkeywords}
+Deep Learning, Laboration 2, PCA analysis, Dimensionality Reduction
+\end{IEEEkeywords}
+\begin{abstract}
+    The source code for this lab can be found at\cite{dataset}. This lab focuses on PCA anlaysis and dimensionality reductions. PCA is used to reduce the dimensionality of the dataset and is then used to train a neural network. The results are compared with the original dataset. The upcoming lab focuses on building a pipeline to tune the hyperparameters of PCA and also the neural network. Finally, we use neural networks for classification and regression.
+    
+\end{abstract}
+
+\section{Task 1: Principal Component Analysis (PCA)}
+\subsection{1- Load or create a dataset with more than 2 dimensions.}
+Data is loaded from sklearn datasets library. Iris dataset is used for this lab. It has 4 features (dimensions) and 3 classes.
+
+\subsection{2- Find the first 2 principal components with and without using sklearn.}
+using sklearn, PCA from sklearn.decomposition is used to find the first 2 principal components. Without sklearn, PCA is implemented using numpy as shown below:
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.48\textwidth]{figures/manual_pca_implementation.png}\caption{Manual PCA implementation using numpy.}\label{fig:manual_pca_implementation}
+\end{figure}
+
+Figure~\ref{fig:manual_pca_implementation} shows the manual PCA implementation using numpy.
+
+\subsection{3- Practice using PCA to preserve a certain percentage of variance.}
+Using sklearn PCA, we can preserve a certain percentage of variance by setting the n\_components parameter to a float value between 0 and 1. For example, to preserve 95\% of variance, we can set n\_components=0.95.
+
+\subsection{4- Train a classification or regression neural network by using: a. The Original dataset b. Principal components}
+
+Using \texttt{MLPClassifier} from \texttt{sklearn.neural~\_network}, we trained a neural network on both the original dataset and the principal components. Performance was evaluated using the accuracy score from \texttt{sklearn.metrics}. With the original data, an accuracy of 93\% was achieved, while PCA-reduced data yielded 97\%. The manual PCA 
+implementation achieved an accuracy of 96.6\%.
+
+
+\subsection{5- Repeat part 4 using Kernel PCA (linear, sigmoid, RBF).}
+Using KernelPCA from sklearn.decomposition, we peroformed Kernel PCA with different kernels. For example, to use linear kernel, we can set kernel='linear'. The performance is compared using accuracy score from sklearn.metrics. With linear kernel 97\% accuracy is achieved, sigmoid kernel yeilds only 36\% accuracy and RBF kernel gives 96.6\% accuracy.This shows that sigmoid activation does not perform well with this nearly linearly seperable dataset. It saturates easily and fails to learn complex patterns. It also overlaps the classes in the feature space. figure~\ref{fig:sigmoid_kernel} shows the PCA results using sigmoid kernel.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.48\textwidth]{figures/sigmoid_kernel.png}\caption{Demonstrates the poor performance of sigmoid kernel in PCA.}\label{fig:sigmoid_kernel}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.48\textwidth]{figures/linear_kernel_pca.png} 
+    \caption{PCA using linear kernel on Iris dataset (demonstration of kernel PCA).}\label{fig:linear_kernel_pca}
+\end{figure}
+
+figure~\ref{fig:linear_kernel_pca} shows the PCA result using linear kernel on Iris dataset. Linear kernel and RBF kernel performs well on this dataset as it is nearly linearly seperable.
+
+\subsection{6- Build a pipeline to tune the hyperparameters of Kernel PCA and also the neural network. Which
+hyperparameters can be tuned?}
+
+Using \texttt{Pipeline} and \texttt{GridSearchCV} from \texttt{sklearn.model\_selection}, we built a pipeline to tune the hyperparameters of Kernel PCA and the MLPClassifier. The hyperparameters that can be tuned for kernel PCA are:
+
+\begin{itemize}
+    \item number of components in Kernel PCA
+    \item Kernel type (linear, sigmoid, RBF)
+    \item gamma value for RBF and sigmoid kernels
+    \item coef0 value for sigmoid kernel
+\end{itemize}
+
+For MLPClassifier, the hyperparameters that can be tuned are:
+\begin{itemize}
+    \item Neural network solver (adam, sgd, lbfgs)
+    \item Number of components
+    \item Neural network hidden layer sizes
+    \item Neural network activation function
+    \item Neural network learning rate
+    \item Neural network max iterations
+    \item Neural network regualarization parameter (alpha)
+\end{itemize}
+
+
+\section{Classification Problem}
+This IRIS model is a single-hidden-layer neural network with a tunable number of units (8–32) and activation function (relu or tanh), followed by a dropout layer and a softmax output layer for three-class classification. The model’s hyperparameters, including dropout and learning rate, are optimised using Keras Tuner to achieve the best validation accuracy.
+
+The result—training accuracy slightly lower than validation accuracy while validation reaches 1.0 and validation loss drops from 0.20 to 0.10, which is expected on a small dataset like IRIS, is shown in figure~\ref{fig:iris_output}.
+Dropout reduces training performance by randomly deactivating neurons during training, whereas validation uses the full model without dropout. 
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{figures/iris_output.png}\caption{Output of IRIS model}\label{fig:iris_output}
+\end{figure*}
+
+In other hand MNIST dataset is more complex than iris, the model for the MNIST dataset consists of a \textbf{tunable convolutional layer} with $32$--$128$ filters and $3\times3$ kernels followed by max pooling, a flatten layer, \textbf{1--4 fully connected dense layers} with tunable units ($32$--$256$) and activations (\texttt{relu} or \texttt{tanh}), and a dropout layer to reduce overfitting. The output layer has \textbf{10 neurons with softmax activation}, and the model is compiled with the Adam optimizer with a tunable learning rate. Figure~\ref{fig:mnist_output} and~\ref{fig:mnist_output2} shows the output of MNIST model.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.48\textwidth]{figures/loss_mnist_fashion.png}\caption{Loss of MNIST model}\label{fig:mnist_output}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.48\textwidth]{figures/accuracy_mnist-fashion.png}\caption{Accuracy of MNIST model}\label{fig:mnist_output2}
+\end{figure}
+
+
+\section{Regression Problem}
+
+After performing hyperparameter tuning on the neural network for the California housing dataset, we obtained an optimized configuration of the model. The first hidden layer contains 192 neurons (\texttt{units\_1 = 192}), which is relatively large and allows the network to capture complex interactions among the input features. The network includes a second hidden layer (\texttt{second\_layer = True}) with 32 neurons (\texttt{units\_2 = 32}), which acts as a bottleneck to enhance generalisation while providing deeper feature representation. A small dropout rate of 0.1 (\texttt{dropout = 0.1}) is applied to reduce the risk of overfitting slightly. The learning rate is set to 0.01 (\texttt{learning\_rate = 0.01}), which is fairly high and may accelerate learning, though it also induce oscillations see figure~\ref{fig:lr_0.01_1} and figure~\ref{fig:lr_0.01_2}. The use of early stopping mitigates this risk by halting training once the validation performance plateaus. Overall, this combination of hyperparameters is reasonable for tabular regression on the California housing dataset, as it balances model complexity and generalisation effectively.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.48\textwidth]{figures/mae_higher_learning_rate.png}\caption{overall training and test MAE and effect of learning rate on MAE with higher learning rate}\label{fig:lr_0.01_1}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.48\textwidth]{figures/loss_higher_learning_rate.png}\caption{Overall training and test loss and    effect of learning rate on loss with higher learning rate}\label{fig:lr_0.01_2}
+\end{figure}
+
+The model was retrained with a lower learning rate of 0.001. This adjustment yielded smoother curves of both mean absolute error and loss, as illustrated in Figures~\ref{fig:hr_0.01_1} and~\ref{fig:hr_0.01_2}, indicating more stable convergence and reduced oscillations during training.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.48\textwidth]{figures/loss_lower_lr.png}\caption{Overall training and test loss and effect of learning rate on loss with lower learning rate}\label{fig:hr_0.01_2}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.48\textwidth]{figures/mae_lower_lr.png}\caption{Overall training and test MAE and effect of learning rate on MAEwith lower learning rate}\label{fig:hr_0.01_1}
+\end{figure}
+
+Overall, both models output similar results on the regression task.
+
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+%\textbf{Important for each reference is that it is a clickable doi that makes it easy for a reader to get hold of the reference directly (see examples in bib file).}
+
+\end{document}
+
+
